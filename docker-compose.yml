@@ -1,0 +1,62 @@
+services:
+    hotel_db:
+        container_name:
+            hotel_db
+        image:
+            postgres:alpine
+        ports:
+            - 5435:${POSTGRES_PORT}
+        restart:
+            unless-stopped
+        volumes:
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+            - postgres-todo:/var/lib/postgresql/data
+        env_file:
+            - path: .env
+              required: true
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB}
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        healthcheck:
+            test: [ "CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 10s
+        deploy:
+            resources:
+                limits:
+                    cpus: "0.1"
+                    memory: 100M
+    hotel_back:
+        container_name:
+            hotel_back
+        build:
+            context:
+                .
+            dockerfile:
+                Dockerfile
+        ports:
+            - 80:80
+        restart:
+            unless-stopped
+        depends_on:
+            - hotel_db
+        develop:
+            watch:
+                - action: sync
+                  path: ./src
+                  target: /app/src
+                - action: rebuild
+                  path: ./requirements.txt
+                - action: rebuild
+                  path: ./main.py
+        deploy:
+            resources:
+                limits:
+                    cpus: "0.5"
+                    memory: 500M
+
+volumes:
+    postgres-todo:
