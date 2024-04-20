@@ -5,7 +5,7 @@ services:
         image:
             postgres:alpine
         ports:
-            - 5435:${POSTGRES_PORT}
+            - ${POSTGRES_PORT}
         restart:
             unless-stopped
         volumes:
@@ -38,7 +38,7 @@ services:
             dockerfile:
                 Dockerfile
         ports:
-            - 80:80
+            - 8000:80
         restart:
             unless-stopped
         depends_on:

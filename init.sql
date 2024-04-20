@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS room
 CREATE TABLE IF NOT EXISTS "user"
 (
     id SERIAL PRIMARY KEY,
+    username VARCHAR, 
     name VARCHAR,
     surname VARCHAR,
     email VARCHAR,

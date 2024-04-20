@@ -11,7 +11,6 @@ class TokenData(BaseModel):
 
 
 class User(BaseModel):
-    id: int
     username: str
     email: str
     name: str
@@ -22,6 +21,9 @@ class AddUser(User):
     password: str
 
 
-class UserInDb(User):
-    password: str
+class UserId(BaseModel):
+    id: int
+
+
+class UserInDb(UserId, AddUser):
     model_config = ConfigDict(from_attributes=True)
