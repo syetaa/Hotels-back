@@ -5,7 +5,7 @@ services:
         image:
             postgres:alpine
         ports:
-            - ${POSTGRES_PORT}
+            - 5435:${POSTGRES_PORT}
         restart:
             unless-stopped
         volumes:

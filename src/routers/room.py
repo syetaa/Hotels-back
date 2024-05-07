@@ -31,7 +31,7 @@ async def add_room(
 
 @rooms_router.get('/{room_id}')
 async def get_room(
-    room_id: Annotated[RoomId, Depends()]
+    room_id: int
 ) -> Room:
     room = await RoomRepository.get_room(room_id)
     if not room:

@@ -16,9 +16,9 @@ class RoomRepository:
             return room.id
 
     @classmethod
-    async def get_room(cls, data: RoomId) -> Room | bool:
+    async def get_room(cls, room_id: int) -> Room | bool:
         async with new_session() as session:
-            query = select(RoomOrm).where(RoomOrm.id == data.id)
+            query = select(RoomOrm).where(RoomOrm.id == room_id)
             result = await session.execute(query)
             room_model = result.scalars().first()
             print(room_model)
