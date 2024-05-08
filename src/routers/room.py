@@ -34,6 +34,7 @@ async def get_room(
     room_id: int
 ) -> Room:
     room = await RoomRepository.get_room(room_id)
+    print(room)
     if not room:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

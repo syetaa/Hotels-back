@@ -1,14 +1,14 @@
 from pydantic import BaseModel, ConfigDict
 
 
-class AddBookmark(BaseModel):
-    user_id: int
+class Bookmark(BaseModel):
     room_id: int
+    model_config = ConfigDict(from_attributes=True)
+
+
+class AddBookmark(Bookmark):
+    user_id: int
 
 
 class BookmarkId(BaseModel):
     id: int
-
-
-class Bookmark(AddBookmark, BookmarkId):
-    model_config = ConfigDict(from_attributes=True)

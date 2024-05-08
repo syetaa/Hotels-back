@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
-from src.models.bookmark import AddBookmark, Bookmark, BookmarkId
+from src.models.bookmark import Bookmark
 from src.models.user import User
 from src.repos.bookmark import BookmarkRepository
 from src.utils import get_current_user
@@ -23,6 +23,15 @@ async def get_bookmarks(
 
 @bookmarks_router.post('/')
 async def add_bookmark(
-    bookmark: Annotated[AddBookmark, Depends()]
-) -> BookmarkId:
-    return await BookmarkRepository.add_bookmark(bookmark)
+    user: Annotated[User, Depends(get_current_user)],
+    bookmark: Annotated[Bookmark, Depends()]
+) -> int:
+    return await BookmarkRepository.add_bookmark(user=user, bookmark=bookmark)
+
+
+@bookmarks_router.delete('/')
+async def delete_bookmark(
+    user: Annotated[User, Depends(get_current_user)],
+    bookmark: Annotated[Bookmark, Depends()]
+):
+    return await BookmarkRepository.delete_bookmark(user=user, bookmark=bookmark)
