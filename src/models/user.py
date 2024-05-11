@@ -17,13 +17,18 @@ class User(BaseModel):
     surname: str
 
 
-class AddUser(User):
-    password: str
-
-
 class UserId(BaseModel):
     id: int
 
 
+class UserInfo(User, UserId):
+    ...
+
+
+class AddUser(User):
+    password: str
+
+
 class UserInDb(UserId, AddUser):
     model_config = ConfigDict(from_attributes=True)
+

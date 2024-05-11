@@ -21,3 +21,9 @@ class RoomId(BaseModel):
 
 class Room(RoomId, AddRoom):
     model_config = ConfigDict(from_attributes=True)
+
+
+class GetRoom(Room):
+    liked: bool
+    model_config = ConfigDict(from_attributes=True)
+

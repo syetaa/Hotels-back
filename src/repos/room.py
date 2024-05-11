@@ -1,7 +1,7 @@
 from sqlalchemy import select
 
-from src.db import new_session, RoomOrm
-from src.models.room import AddRoom, Room, RoomFilter, RoomId
+from src.db import BookmarkOrm, new_session, RoomOrm
+from src.models.room import AddRoom, GetRoom, Room, RoomFilter
 
 
 class RoomRepository:
@@ -16,15 +16,15 @@ class RoomRepository:
             return room.id
 
     @classmethod
-    async def get_room(cls, room_id: int) -> Room | bool:
+    async def get_room(cls, room_id: int) -> GetRoom | bool:
         async with new_session() as session:
-            query = select(RoomOrm).where(RoomOrm.id == room_id)
+            query = select(RoomOrm, BookmarkOrm).outerjoin(BookmarkOrm, BookmarkOrm.room_id == RoomOrm.id).where(RoomOrm.id == room_id)
             result = await session.execute(query)
-            room_model = result.scalars().first()
-            print(room_model)
+            room_model, bookmark_model = result.first()
             if room_model is None:
                 return False
-            room = Room.model_validate(room_model)
+            room = Room.model_validate(room_model).model_dump()
+            room['liked'] = True if bookmark_model is not None else False
             return room
 
     @classmethod
@@ -35,3 +35,4 @@ class RoomRepository:
             room_models = result.scalars().all()
             rooms = [Room.model_validate(room_model) for room_model in room_models]
             return rooms
+

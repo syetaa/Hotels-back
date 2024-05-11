@@ -1,7 +1,7 @@
 from sqlalchemy import select
 
 from src.db import new_session, UserOrm
-from src.models.user import AddUser, UserInDb
+from src.models.user import AddUser, UserInDb, UserInfo
 
 
 class UserRepository:
@@ -25,3 +25,4 @@ class UserRepository:
                 return False
             user = UserInDb.model_validate(user_model)
             return user
+

@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from src.consts import ACCESS_TOKEN_EXPIRE_MINUTES
-from src.models.user import AddUser, Token, User, UserId
+from src.models.user import AddUser, Token, User, UserId, UserInfo
 from src.repos.user import UserRepository
 from src.utils import authenticate_user, create_access_token, get_current_user, get_password_hash
 
@@ -36,7 +36,7 @@ async def login(
 @users_router.get('/')
 async def get_user_info(
     user: Annotated[User, Depends(get_current_user)],
-) -> User:
+) -> UserInfo:
     return user
 
 
@@ -48,3 +48,4 @@ async def add_user(
     user.password = hashed_password
     user_id = await UserRepository.add_user(user)
     return {'id': user_id}
+
