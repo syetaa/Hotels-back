@@ -1,6 +1,6 @@
 from sqlalchemy import delete, select
 
-from src.db import new_session, BookmarkOrm
+from src.db import RoomOrm, new_session, BookmarkOrm
 from src.models.bookmark import Bookmark, AddBookmark
 from src.models.user import User, UserInDb
 
@@ -29,9 +29,9 @@ class BookmarkRepository:
     @classmethod
     async def get_bookmarks(cls, user: User) -> list[Bookmark]:
         async with new_session() as session:
-            query = select(BookmarkOrm).where(BookmarkOrm.user_id == user.id)
+            query = select(RoomOrm).join(BookmarkOrm, BookmarkOrm.room_id == RoomOrm.id).where(BookmarkOrm.user_id == user.id)
             result = await session.execute(query)
-            bookmark_models = result.scalars().all()
-            print(bookmark_models)
-            bookmarks = [Bookmark.model_validate(bookmark_model) for bookmark_model in bookmark_models]
+            room_models = result.scalars().all()
+            print(room_models)
+            bookmarks = [Bookmark.model_validate(room_model) for room_model in room_models]
             return bookmarks

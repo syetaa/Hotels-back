@@ -1,8 +1,11 @@
+
 from pydantic import BaseModel, ConfigDict
 
+from src.models.room import Room
 
-class Bookmark(BaseModel):
-    room_id: int
+
+class Bookmark(Room):
+    id: int
     model_config = ConfigDict(from_attributes=True)
 
 
