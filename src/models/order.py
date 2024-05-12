@@ -1,18 +1,7 @@
-from datetime import datetime
+from pydantic import ConfigDict
 
-from pydantic import BaseModel, ConfigDict
-
-
-class AddOrder(BaseModel):
-    user_id: int
-    room_id: int
-    start_date: datetime
-    end_date: datetime
+from src.models.room import Room
 
 
-class OrderId(BaseModel):
-    id: int
-
-
-class Order(AddOrder, OrderId):
+class GetOrder(Room):
     model_config = ConfigDict(from_attributes=True)

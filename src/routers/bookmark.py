@@ -34,5 +34,4 @@ async def delete_bookmark(
     user: Annotated[User, Depends(get_current_user)],
     room_id: int
 ):
-    return await BookmarkRepository.delete_bookmark(user=user, room_id=room_id)
-
+    await BookmarkRepository.delete_bookmark(user=user, room_id=room_id)
