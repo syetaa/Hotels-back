@@ -22,8 +22,6 @@ CREATE TABLE IF NOT EXISTS "order"
     id SERIAL PRIMARY KEY,
     user_id INT references "user"(id),
     room_id INT references room(id),
-    start_date DATE,
-    end_date DATE
 );
 
 CREATE TABLE IF NOT EXISTS bookmark
