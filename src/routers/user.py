@@ -48,4 +48,3 @@ async def add_user(
     user.password = hashed_password
     user_id = await UserRepository.add_user(user)
     return {'id': user_id}
-

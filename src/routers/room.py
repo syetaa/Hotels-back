@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from starlette import status
 
-from src.models.room import AddRoom, GetRoom, RoomFilter, Room, RoomId
+from src.models.room import AddRoom, GetRoom, RoomFilter, RoomId
 from src.models.user import User
 from src.repos.room import RoomRepository
 from src.utils import get_current_user
@@ -16,10 +16,10 @@ rooms_router = APIRouter(
 
 @rooms_router.get('/')
 async def get_rooms(
+    user: Annotated[User, Depends(get_current_user)],
     room: Annotated[RoomFilter, Depends()]
-) -> list[Room]:
-    print(room)
-    rooms = await RoomRepository.get_rooms(room)
+) -> list[GetRoom]:
+    rooms = await RoomRepository.get_rooms(room=room, user=user)
     return rooms
 
 
@@ -43,4 +43,3 @@ async def get_room(
             detail="No room with such id",
         )
     return room
-

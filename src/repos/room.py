@@ -40,10 +40,36 @@ class RoomRepository:
             return room
 
     @classmethod
-    async def get_rooms(cls, data: RoomFilter) -> list[Room]:
+    async def get_rooms(cls, room: RoomFilter, user: User) -> list[GetRoom]:
         async with new_session() as session:
-            query = select(RoomOrm).where(RoomOrm.capacity >= data.capacity, RoomOrm.price >= data.min_price, RoomOrm.price <= data.max_price, RoomOrm.city == data.city)
+            query = select(RoomOrm, BookmarkOrm, OrderOrm).outerjoin(BookmarkOrm, BookmarkOrm.room_id == RoomOrm.id).outerjoin(OrderOrm, OrderOrm.room_id == RoomOrm.id).where(RoomOrm.capacity >= room.capacity, RoomOrm.price >= room.min_price, RoomOrm.price <= room.max_price, RoomOrm.city == room.city.capitalize())
             result = await session.execute(query)
-            room_models = result.scalars().all()
-            rooms = [Room.model_validate(room_model) for room_model in room_models]
+            models = result.all()
+            new_models = []
+            for model in models:
+                room_model, bookmark_model, order_model = model
+                room = Room.model_validate(room_model).model_dump()
+                if bookmark_model is None:
+                    room['liked'] = False
+                else:
+                    bookmark = Bookmark.model_validate(bookmark_model).model_dump()
+                    if bookmark['user_id'] == user.id:
+                        room['liked'] = True
+                    elif bookmark['user_id'] is None:
+                        room['liked'] = False
+                    else:
+                        continue
+                if order_model is None:
+                    room['ordered'] = False
+                else:
+                    order = Order.model_validate(order_model).model_dump()
+                    if order['user_id'] == user.id:
+                        room['ordered'] = True
+                    elif order['user_id'] is None:
+                        room['ordered'] = True
+                    else:
+                        continue
+                new_models.append(room)
+
+            rooms = [GetRoom.model_validate(model) for model in new_models]
             return rooms

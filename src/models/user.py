@@ -31,4 +31,3 @@ class AddUser(User):
 
 class UserInDb(UserId, AddUser):
     model_config = ConfigDict(from_attributes=True)
-

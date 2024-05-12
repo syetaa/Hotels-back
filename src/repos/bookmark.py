@@ -29,7 +29,5 @@ class BookmarkRepository:
             query = select(RoomOrm).join(BookmarkOrm, BookmarkOrm.room_id == RoomOrm.id).where(BookmarkOrm.user_id == user.id)
             result = await session.execute(query)
             room_models = result.scalars().all()
-            print(room_models)
             bookmarks = [GetBookmark.model_validate(room_model) for room_model in room_models]
             return bookmarks
-
