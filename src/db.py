@@ -44,8 +44,6 @@ class OrderOrm(Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
     room_id: Mapped[int] = mapped_column(ForeignKey("room.id"))
-    start_date: Mapped[datetime]
-    end_date: Mapped[datetime]
 
 
 class BookmarkOrm(Model):
