@@ -36,7 +36,7 @@ async def get_room(
     user: Annotated[User, Depends(get_current_user)],
     room_id: int
 ) -> GetRoom:
-    room = await RoomRepository.get_room(room_id)
+    room = await RoomRepository.get_room(room_id=room_id, user=user)
     if not room:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

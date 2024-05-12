@@ -25,5 +25,6 @@ class Room(RoomId, AddRoom):
 
 class GetRoom(Room):
     liked: bool
+    ordered: bool
     model_config = ConfigDict(from_attributes=True)
 
