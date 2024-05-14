@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS "order"
 (
     id SERIAL PRIMARY KEY,
     user_id INT references "user"(id),
-    room_id INT references room(id),
+    room_id INT references room(id)
 );
 
 CREATE TABLE IF NOT EXISTS bookmark

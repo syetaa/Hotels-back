@@ -13,8 +13,7 @@ rooms_router = APIRouter(
     tags=["rooms"]
 )
 
-
-@rooms_router.get('/')
+@rooms_router.get('')
 async def get_rooms(
     user: Annotated[User, Depends(get_current_user)],
     room: Annotated[RoomFilter, Depends()]
@@ -22,14 +21,12 @@ async def get_rooms(
     rooms = await RoomRepository.get_rooms(room=room, user=user)
     return rooms
 
-
-@rooms_router.post('/')
+@rooms_router.post('')
 async def add_room(
     room: Annotated[AddRoom, Depends()]
 ) -> RoomId:
     room_id = await RoomRepository.add_room(room)
     return {'id': room_id}
-
 
 @rooms_router.get('/{room_id}')
 async def get_room(

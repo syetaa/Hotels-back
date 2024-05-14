@@ -32,12 +32,25 @@ docker compose up --build -d
 ```
 
 ## Default
-### Development mode (fast-refresh)
+### HTTP
+#### Development mode (fast-refresh)
 ```bash
 uvicorn main:app --reload
 ```
 
-### Production mode
+#### Production mode
 ```bash
 uvicorn main:app
+```
+
+### HTTPS
+
+#### Development mode (fast-refresh)
+```bash
+uvicorn main:app --ssl-keyfile ./key.pem --ssl-certfile ./cert.pem --reload
+```
+
+#### Production mode
+```bash
+uvicorn main:app --ssl-keyfile ./key.pem --ssl-certfile ./cert.pem
 ```
