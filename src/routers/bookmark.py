@@ -13,7 +13,7 @@ bookmarks_router = APIRouter(
 )
 
 
-@bookmarks_router.get('/')
+@bookmarks_router.get('')
 async def get_bookmarks(
     user: Annotated[User, Depends(get_current_user)]
 ) -> list[GetBookmark]:

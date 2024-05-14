@@ -13,7 +13,7 @@ orders_router = APIRouter(
 )
 
 
-@orders_router.get('/')
+@orders_router.get('')
 async def get_orders(
     user: Annotated[User, Depends(get_current_user)]
 ) -> list[GetOrder]:

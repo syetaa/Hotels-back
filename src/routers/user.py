@@ -33,14 +33,14 @@ async def login(
     return Token(access_token=access_token, token_type="bearer")
 
 
-@users_router.get('/')
+@users_router.get('')
 async def get_user_info(
     user: Annotated[User, Depends(get_current_user)],
 ) -> UserInfo:
     return user
 
 
-@users_router.post('/')
+@users_router.post('')
 async def add_user(
     user: Annotated[AddUser, Depends()],
 ) -> UserId:
