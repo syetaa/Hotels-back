@@ -1,5 +1,3 @@
-import ssl
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -13,9 +11,6 @@ app.include_router(users_router)
 app.include_router(rooms_router)
 app.include_router(orders_router)
 app.include_router(bookmarks_router)
-
-ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-ssl_context.load_cert_chain('./cert.pem', keyfile='./key.pem')
 
 origins = [
     "http://localhost",
