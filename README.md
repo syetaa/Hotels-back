@@ -32,7 +32,6 @@ docker compose up --build -d
 ```
 
 ## Default
-### HTTP
 #### Development mode (fast-refresh)
 ```bash
 uvicorn main:app --reload
