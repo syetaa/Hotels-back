@@ -3,9 +3,9 @@ services:
         container_name:
             hotel_db
         image:
-            postgres:alpine
+            postgres:17-alpine
         ports:
-            - 5435:${POSTGRES_PORT}
+            - 127.0.0.1:5435:${POSTGRES_PORT}
         restart:
             unless-stopped
         volumes:
@@ -38,7 +38,7 @@ services:
             dockerfile:
                 Dockerfile
         ports:
-            - 8000:80
+            - 127.0.0.1:${PORT}:80
         restart:
             unless-stopped
         depends_on:
@@ -55,8 +55,8 @@ services:
         deploy:
             resources:
                 limits:
-                    cpus: "0.5"
-                    memory: 500M
+                    cpus: "0.1"
+                    memory: 100M
 
 volumes:
     postgres-todo:
